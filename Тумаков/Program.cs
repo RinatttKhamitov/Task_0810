@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-
+#pragma execution_character_set("utf-8")
 namespace Тумаков
 {
     class Program
@@ -22,6 +22,7 @@ namespace Тумаков
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
                     char[] arrline = line.ToCharArray();
+                    Console.WriteLine(line);
                     foreach (char letter in arrline)
                     {
                         if (alg.Contains(letter))

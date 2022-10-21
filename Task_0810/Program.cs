@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace Task_0810
 {
@@ -36,19 +39,24 @@ namespace Task_0810
 
         class Program
         {
-            static void Main(string[] args)
+            static async Task Main(string[] args)
             {
+                foreach (var f in new DirectoryInfo(@"...").GetFiles("*.cs", SearchOption.AllDirectories))
+                {
+                    string s = File.ReadAllText(f.FullName);
+                    File.WriteAllText(f.FullName, s, Encoding.UTF8);
+                }
                 Console.WriteLine("Задание 1");
                 Student student1 = new Student("Хамитов", "Ринат", DateTime.Parse("10.11.2004"), 250);
-                Student student2 = new Student("Хамидуллина", "Диана", DateTime.Parse("10.11.2004"), 250);
-                Student student3 = new Student("Першунин", "Артём", DateTime.Parse("10.11.2004"), 249);
-                Student student4 = new Student("Митрофанов", "Лёня", DateTime.Parse("10.11.2004"), 230);
-                Student student5 = new Student("Гильфанова", "Аделя", DateTime.Parse("10.11.2004"), 290);
-                Student student6 = new Student("Шапошникова", "Катя", DateTime.Parse("10.11.2004"), 260);
-                Student student7 = new Student("Агиева", "Лилия", DateTime.Parse("10.11.2004"), 234);
+                Student student2 = new Student("Хамидуллина", "Диана", DateTime.Parse("10.8.2004"), 250);
+                Student student3 = new Student("Першунин", "Артём", DateTime.Parse("12.3.2005"), 249);
+                Student student4 = new Student("Митрофанов", "Лёня", DateTime.Parse("1.2.2004"), 230);
+                Student student5 = new Student("Гильфанова", "Аделя", DateTime.Parse("2.7.2004"), 290);
+                Student student6 = new Student("Шапошникова", "Катя", DateTime.Parse("21.4.2004"), 260);
+                Student student7 = new Student("Агиева", "Лилия", DateTime.Parse("3.12.2003"), 234);
                 Student student8 = new Student("Ахметов", "Ильдар", DateTime.Parse("10.11.2004"), 263);
-                Student student9 = new Student("Саитов", "Марат", DateTime.Parse("10.11.2004"), 248);
-                Student student10 = new Student("Сагдуллин", "Амир", DateTime.Parse("10.11.2004"), 273);
+                Student student9 = new Student("Саитов", "Марат", DateTime.Parse("26.8.2004"), 248);
+                Student student10 = new Student("Сагдуллин", "Амир", DateTime.Parse("2.9.2004"), 273);
                 Dictionary<int, Student> people = new Dictionary<int, Student>()
             {
                 { 1, student1}, { 2, student2},
@@ -129,8 +137,7 @@ namespace Task_0810
                 Console.Clear();
                 Console.WriteLine("Задание 3");
                 // подключение поломка включение
-                Сitizen citizen1 = new Сitizen("Хамитов", 128765, "подключение", 4, 0);
-                Сitizen citizen2 = new Сitizen("Хамидуллина", 128766, "поломка", 5, 1);
+                Сitizen citizen2 = new Сitizen("Хамидуллина", 128766, "поломка", 2, 1);
                 Сitizen citizen3 = new Сitizen("Митрофанов", 128767, "подключение", 6, 1);
                 Сitizen citizen4 = new Сitizen("Гильфанова", 128768, "включение", 2, 0);
                 Сitizen citizen5 = new Сitizen("Шапошникова", 128769, "включение", 8, 1);
@@ -139,10 +146,23 @@ namespace Task_0810
                 List<Сitizen> window3 = new List<Сitizen>();
                 Dictionary<int, Сitizen> people2 = new Dictionary<int, Сitizen>()
             {
-                { citizen1.passport_ID, citizen1}, { citizen2.passport_ID, citizen2},
+                { citizen2.passport_ID, citizen2},
                 { citizen3.passport_ID, citizen3}, { citizen4.passport_ID, citizen4},
                 { citizen5.passport_ID, citizen5}
             };
+                string path = "C:/Users/stone/source/repos/Task_0810/Task_0810/ex3.txt";
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    string? line;
+                    while ((line = await reader.ReadLineAsync()) != null)
+                    {
+
+                        string[] arrline = line.Split(" ");
+                        Сitizen citizen = new Сitizen(arrline[0], int.Parse(arrline[1]), arrline[2], int.Parse(arrline[3]), int.Parse(arrline[4]));
+                        people2[citizen.passport_ID] = citizen;
+
+                    }
+                }
                 Console.WriteLine("Хочешь добавить еще жителя?");
                 string question = Console.ReadLine();
                 if (question.ToLower().Equals("да"))
